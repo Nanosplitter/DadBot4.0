@@ -16,3 +16,4 @@ pids
 *.pid
 *.seed
 *.pid.lock
+src/config.json
