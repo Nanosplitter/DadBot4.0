@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "command",
-        "git"
+        "git",
+        "config"
     ]
 }
