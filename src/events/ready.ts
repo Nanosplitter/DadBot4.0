@@ -11,6 +11,6 @@ export class ReadyEvent extends Event {
   }
 
   execute() {
-    console.log(`${this.client.user!.tag} is logged in`)
+    console.log(`${this.client.user!.tag} is logged in`);
   }
-};
+}

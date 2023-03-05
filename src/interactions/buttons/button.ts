@@ -6,7 +6,7 @@ export class ButtonComponent extends Button {
   constructor(client: ShewenyClient) {
     super(client, ["primaryId", "secondaryId", "successId", "dangerId"]);
   }
-  
+
   async execute(button: ButtonInteraction) {
     switch (button.customId) {
       case "primaryId":
@@ -23,4 +23,4 @@ export class ButtonComponent extends Button {
         break;
     }
   }
-};
+}

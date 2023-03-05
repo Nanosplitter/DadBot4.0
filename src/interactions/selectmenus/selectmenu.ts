@@ -1,12 +1,12 @@
 import { SelectMenu } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import type { SelectMenuInteraction } from "discord.js";
-  
+
 export class SelectComponent extends SelectMenu {
   constructor(client: ShewenyClient) {
     super(client, ["selectId"]);
   }
-  
+
   async execute(selectMenu: SelectMenuInteraction) {
     switch (selectMenu.values[0]) {
       case "first_option":
@@ -17,4 +17,4 @@ export class SelectComponent extends SelectMenu {
         break;
     }
   }
-};
+}
