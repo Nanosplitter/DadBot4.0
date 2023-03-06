@@ -3,7 +3,7 @@ import { ShewenyClient } from "sheweny";
 import config from "./config.json";
 
 const client = new ShewenyClient({
-  intents: ["Guilds", "GuildMessages"],
+  intents: ["Guilds", "GuildMessages", "GuildMembers"],
   presence: {
     status: "online",
     activities: [
@@ -34,29 +34,21 @@ const client = new ShewenyClient({
       directory: "./inhibitors",
     },
   },
-  mode : "development", // Change to production for production bot
-
-
+  mode: "development", // Change to production for production bot
 });
 
 client.managers
-      .commands!.on(
-        "cooldownLimit",
-        (ctx: CommandInteraction | Message): any => {
-          return ctx.reply({
-            content: "Woah there kiddo, slow down a bit",
-            ephemeral: true,
-          });
-        }
-      )
-      .on(
-        "userMissingPermissions",
-        (interaction: CommandInteraction, missing: string) => {
-          return interaction.reply({
-            content: `You don't have ${missing} permissions`,
-            ephemeral: true,
-          });
-        }
-      );
+  .commands!.on("cooldownLimit", (ctx: CommandInteraction | Message): any => {
+    return ctx.reply({
+      content: "Woah there kiddo, slow down a bit",
+      ephemeral: true,
+    });
+  })
+  .on("userMissingPermissions", (interaction: CommandInteraction, missing: string) => {
+    return interaction.reply({
+      content: `You don't have ${missing} permissions`,
+      ephemeral: true,
+    });
+  });
 
 client.login(config.DISCORD_TOKEN);
