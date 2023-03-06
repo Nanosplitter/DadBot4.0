@@ -11,6 +11,7 @@
     "formatcheck": "prettier --check ."
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "@discordjs/voice": "*",
     "discord.js": "^14.0.0",
     "mysql2": "^3.2.0",
