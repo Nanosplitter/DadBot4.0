@@ -6,7 +6,7 @@ import type { ShewenyClient } from "sheweny";
 export class Cat extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
-      name: "randomcat",
+      name: "cat",
       type: "SLASH_COMMAND",
       category: "Misc",
       description: "Return random cat picture.",
