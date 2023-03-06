@@ -3,7 +3,7 @@ import { ShewenyClient } from "sheweny";
 import config from "./config.json";
 
 const client = new ShewenyClient({
-  intents: ["Guilds", "GuildMessages", "GuildMembers"],
+  intents: ["Guilds", "GuildMessages", "GuildMembers", "MessageContent", "GuildMessageReactions", "DirectMessages"],
   presence: {
     status: "online",
     activities: [
