@@ -15,7 +15,7 @@ export default class extends Command {
 
   async execute(interaction: ContextMenuInteraction) {
     return interaction.reply({
-      content: interaction.options.getUser("user")?.displayAvatarURL({ extension: "png", size: 512 }),
+      content: interaction.options.getUser("user")?.displayAvatarURL({ extension: "png", size: 1024 }),
     });
   }
 }
