@@ -1,8 +1,9 @@
 import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { CommandInteraction, ApplicationCommandOptionType } from "discord.js";
+import { CommandInteraction, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import * as chrono from "chrono-node";
 import { addReminder } from "../models/remindme-table";
+import { ButtonComponent } from "../interactions/buttons/button";
 
 export default class extends Command {
   constructor(client: ShewenyClient) {
@@ -52,8 +53,14 @@ export default class extends Command {
 
     //TODO: It hates things like "Christmas", figure out why
     const res = chrono.parseDate(when.toString(), { timezone: "EST" });
-    console.log(res);
-    await addReminder(interaction.user.username, interaction.user.id, what.toString(), res, interaction.channelId);
-    await interaction.reply({ content: `**${when}**\n${res.toString()}` });
+    //await addReminder(interaction.user.username, interaction.user.id, what.toString(), res, interaction.channelId);
+
+    const row = new ActionRowBuilder().addComponents([
+      new ButtonBuilder().setCustomId("remindmeAccept").setLabel("Accept").setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId("remindmeReject").setLabel("Reject").setStyle(ButtonStyle.Danger),
+    ]);
+
+    // @ts-ignore
+    await interaction.reply({ content: "I think you should,", components: [row] });
   }
 }
