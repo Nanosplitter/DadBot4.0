@@ -1,6 +1,6 @@
 import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { CommandInteraction, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { CommandInteraction, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 import * as chrono from "chrono-node";
 import { addReminder } from "../models/remindme-table";
 import { ButtonComponent } from "../interactions/buttons/button";
@@ -53,14 +53,25 @@ export default class extends Command {
 
     //TODO: It hates things like "Christmas", figure out why
     const res = chrono.parseDate(when.toString(), { timezone: "EST" });
-    //await addReminder(interaction.user.username, interaction.user.id, what.toString(), res, interaction.channelId);
+    const reminderInfo = await addReminder(interaction.user.username, interaction.user.id, what.toString(), res, interaction.channelId);
+    console.log(reminderInfo);
 
-    const row = new ActionRowBuilder().addComponents([
-      new ButtonBuilder().setCustomId("remindmeAccept").setLabel("Accept").setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId("remindmeReject").setLabel("Reject").setStyle(ButtonStyle.Danger),
-    ]);
+    const embed = new EmbedBuilder().setTitle("Reminder Created").setDescription("Here's your reminder!");
+
+    embed.addFields({
+      name: "What",
+      value: what.toString(),
+    });
+
+    embed.addFields({
+      name: "When",
+      value: res.toString(),
+    });
 
     // @ts-ignore
-    await interaction.reply({ content: "I think you should,", components: [row] });
+    embed.setFooter({ text: `To delete this reminder, run /deletereminder ${reminderInfo.insertId}` });
+
+    // @ts-ignore
+    await interaction.reply({ embeds: [embed] });
   }
 }
