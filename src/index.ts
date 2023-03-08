@@ -16,6 +16,10 @@ const client = new ShewenyClient({
     commands: {
       directory: "./commands",
       autoRegisterApplicationCommands: true,
+      applicationPermissions: true,
+      default: {
+        userPermissions: ["UseApplicationCommands"],
+      },
       prefix: "!",
     },
     events: {
