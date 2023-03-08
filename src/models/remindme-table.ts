@@ -32,7 +32,7 @@ export function deleteOldReminders(): Promise<ReminderRow[]> {
   });
 }
 
-export function addReminder(who: string, who_id: string, what: string, time: Date, channel: string): Promise<ReminderRow[]> {
+export function addReminder(who: string, who_id: string, what: string, time: Date, channel: string) {
   return new Promise((resolve, reject) => {
     pool.query<(ReminderRow & mysql.RowDataPacket)[]>(
       "INSERT INTO remindme (who, who_id, what, time, channel) VALUES (?, ?, ?, ?, ?)",
@@ -44,5 +44,16 @@ export function addReminder(who: string, who_id: string, what: string, time: Dat
         resolve(results);
       }
     );
+  });
+}
+
+export function deleteReminder(id: number) {
+  return new Promise((resolve, reject) => {
+    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("DELETE FROM remindme WHERE id = ?", [id], function (err, results, fields) {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
   });
 }
