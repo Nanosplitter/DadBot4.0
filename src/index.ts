@@ -1,7 +1,8 @@
 import { CommandInteraction, Message } from "discord.js";
 import { ShewenyClient } from "sheweny";
 import config from "./config.json";
-import { reminderEmitter } from "./emitters/reminder-emitter";
+// import { reminderEmitter } from "./emitters/reminder-emitter";
+import runSchedulers from "./schedulers";
 
 const client = new ShewenyClient({
   intents: ["Guilds", "GuildMessages", "GuildMembers", "MessageContent", "GuildMessageReactions", "DirectMessages"],
@@ -56,12 +57,7 @@ client.managers
     });
   });
 
-function sendReminderCheckEvent() {
-  reminderEmitter.emit("checkreminders");
-
-  setTimeout(sendReminderCheckEvent, 5000);
-}
-
 client.login(config.DISCORD_TOKEN);
 
-sendReminderCheckEvent();
+runSchedulers();
+// sendReminderCheckEvent();
