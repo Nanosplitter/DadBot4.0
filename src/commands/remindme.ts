@@ -3,7 +3,6 @@ import type { ShewenyClient } from "sheweny";
 import { CommandInteraction, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 import * as chrono from "chrono-node";
 import { addReminder } from "../models/remindme-table";
-import { ButtonComponent } from "../interactions/buttons/button";
 
 export default class extends Command {
   constructor(client: ShewenyClient) {
