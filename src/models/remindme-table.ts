@@ -12,7 +12,7 @@ export type ReminderRow = {
 
 export function getRemindersBeforeNow(): Promise<ReminderRow[]> {
   return new Promise((resolve, reject) => {
-    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("SELECT * FROM remindme WHERE remind_time <= UTC_TIMESTAMP();", function (err, results, fields) {
+    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("SELECT * FROM remindme WHERE time <= UTC_TIMESTAMP();", function (err, results, fields) {
       if (err) {
         reject(err);
       }
@@ -23,7 +23,7 @@ export function getRemindersBeforeNow(): Promise<ReminderRow[]> {
 
 export function deleteOldReminders(): Promise<ReminderRow[]> {
   return new Promise((resolve, reject) => {
-    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("DELETE FROM remindme WHERE remind_time <= UTC_TIMESTAMP();", function (err, results, fields) {
+    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("DELETE FROM remindme WHERE time <= UTC_TIMESTAMP();", function (err, results, fields) {
       if (err) {
         reject(err);
       }
@@ -32,7 +32,7 @@ export function deleteOldReminders(): Promise<ReminderRow[]> {
   });
 }
 
-export function addReminder(who: string, who_id: string, what: string, time: Date, channel: string) {
+export function addReminder(who: string, who_id: string, what: string, time: string, channel: string) {
   return new Promise((resolve, reject) => {
     pool.query<(ReminderRow & mysql.RowDataPacket)[]>(
       "INSERT INTO remindme (who, who_id, what, time, channel) VALUES (?, ?, ?, ?, ?)",

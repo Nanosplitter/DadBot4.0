@@ -51,9 +51,22 @@ export default class extends Command {
     }
 
     //TODO: It hates things like "Christmas", figure out why
-    const res = chrono.parseDate(when.toString(), { timezone: "EST" });
-    const reminderInfo = await addReminder(interaction.user.username, interaction.user.id, what.toString(), res, interaction.channelId);
-    console.log(reminderInfo);
+    let res;
+
+    res = chrono.parseDate(when.toString(), { timezone: "EST" });
+    if (res === null) {
+      res = chrono.parseDate(when.toString() + " from now", { timezone: "EST" });
+    }
+
+    if (res === null) {
+      await interaction.reply({
+        content: 'I couldn\'t figure out that date, try again with something more specific like "4 days from now"',
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const reminderInfo = await addReminder(interaction.user.username, interaction.user.id, what.toString(), res.toISOString().replace("T", " ").replace("Z", ""), interaction.channelId);
 
     const embed = new EmbedBuilder().setTitle("Reminder Created").setDescription("Here's your reminder!");
 
