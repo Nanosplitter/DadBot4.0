@@ -47,7 +47,18 @@ export function addReminder(who: string, who_id: string, what: string, time: Dat
   });
 }
 
-export function deleteReminder(id: number) {
+export function getReminderById(id: string): Promise<ReminderRow[]> {
+  return new Promise((resolve, reject) => {
+    pool.query<(ReminderRow & mysql.RowDataPacket)[]>("SELECT * FROM remindme WHERE id = ?", [id], function (err, results, fields) {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+export function deleteReminder(id: string) {
   return new Promise((resolve, reject) => {
     pool.query<(ReminderRow & mysql.RowDataPacket)[]>("DELETE FROM remindme WHERE id = ?", [id], function (err, results, fields) {
       if (err) {
