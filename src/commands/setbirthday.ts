@@ -1,6 +1,6 @@
 import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { CommandInteraction, ApplicationCommandOptionType } from "discord.js";
+import { CommandInteraction, ApplicationCommandOptionType, TextChannel } from "discord.js";
 import { deleteExistingBirthdays, addBirthday } from "../models/birthdays-table";
 
 export default class extends Command {
@@ -27,6 +27,12 @@ export default class extends Command {
           min_value: 1,
           max_value: 31,
         },
+        {
+          name: "channel",
+          description: "The channel to send the birthday message to",
+          type: ApplicationCommandOptionType.Channel,
+          required: true,
+        },
       ],
     });
   }
@@ -34,6 +40,7 @@ export default class extends Command {
   async execute(interaction: CommandInteraction) {
     const month = interaction.options.get("month")?.value as number;
     const day = interaction.options.get("day")?.value as number;
+    const channel = interaction.options.get("channel")?.channel as TextChannel;
 
     if (month == undefined || day == undefined) {
       await interaction.reply({
@@ -43,11 +50,11 @@ export default class extends Command {
       return;
     }
 
-    await deleteExistingBirthdays(interaction.user.id, interaction.channelId);
-    await addBirthday(interaction.user.id, interaction.user.toString(), interaction.channelId, month, day);
+    await deleteExistingBirthdays(interaction.user.username, channel.id);
+    await addBirthday(interaction.user.username, interaction.user.toString(), channel.id, month, day);
 
     await interaction.reply({
-      content: `Birthday set to ${month}/${day}`,
+      content: `Birthday set to ${month}/${day}!`,
     });
   }
 }

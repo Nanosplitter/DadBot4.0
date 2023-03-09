@@ -37,3 +37,15 @@ export function addBirthday(author: string, mention: string, channel_id: string,
     );
   });
 }
+
+// get birthdays by month and day
+export function getBirthdaysByMonthAndDay(month: number, day: number): Promise<BirthdayRow[]> {
+  return new Promise((resolve, reject) => {
+    pool.query<(BirthdayRow & mysql.RowDataPacket)[]>("SELECT * FROM birthdays_4 WHERE month = ? AND day = ?", [month, day], function (err, results, fields) {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
