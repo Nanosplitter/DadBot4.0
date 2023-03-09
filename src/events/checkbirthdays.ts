@@ -1,6 +1,6 @@
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { birthdayEmitter } from "../emitters/birthday-emitter";
+import { schedulerEmitter } from "../emitters/scheduler-emitter";
 import { getBirthdaysByMonthAndDay } from "../models/birthdays-table";
 import { EmbedBuilder, TextChannel } from "discord.js";
 
@@ -8,7 +8,7 @@ export default class extends Event {
   constructor(client: ShewenyClient) {
     super(client, "checkbirthdays", {
       description: "Event to run whenever it is someone's birthday",
-      emitter: birthdayEmitter,
+      emitter: schedulerEmitter,
       once: false,
     });
   }

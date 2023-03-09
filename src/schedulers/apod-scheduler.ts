@@ -5,7 +5,7 @@ export default function runCronJob() {
   new CronJob({
     cronTime: "0 9 * * *",
     onTick: () => {
-      schedulerEmitter.emit("checkbirthdays");
+      schedulerEmitter.emit("runapod");
     },
     timeZone: "America/New_York",
   }).start();

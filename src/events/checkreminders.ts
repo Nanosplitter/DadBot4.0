@@ -1,6 +1,6 @@
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { reminderEmitter } from "../emitters/reminder-emitter";
+import { schedulerEmitter } from "../emitters/scheduler-emitter";
 import { getRemindersBeforeNow, deleteOldReminders } from "../models/remindme-table";
 import { EmbedBuilder, TextChannel } from "discord.js";
 
@@ -8,7 +8,7 @@ export default class extends Event {
   constructor(client: ShewenyClient) {
     super(client, "checkreminders", {
       description: "Event to run whenever a reminder needs to happen",
-      emitter: reminderEmitter,
+      emitter: schedulerEmitter,
       once: false,
     });
   }
