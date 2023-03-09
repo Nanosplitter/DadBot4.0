@@ -13,7 +13,7 @@ export default class extends Event {
   }
 
   async execute() {
-    const channelId = "1015789631188508752";
+    const channelId = "856919399789625376";
     const channel = (await this.client.channels.fetch(channelId)) as TextChannel;
 
     const apodUrl = "https://api.nasa.gov/planetary/apod?api_key=hQqgupM0Ghb1OTjjrPkoIDw1EJq6pZQQdgMGBpnb";
