@@ -61,4 +61,3 @@ client.managers
 client.login(config.DISCORD_TOKEN);
 
 runSchedulers();
-// sendReminderCheckEvent();
