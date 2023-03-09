@@ -14,8 +14,8 @@ export default class extends Command {
 
   async execute(interaction: CommandInteraction) {
     const row = new ActionRowBuilder().addComponents([
-      new ButtonBuilder().setCustomId("primaryId").setLabel("Accept").setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId("secondaryId").setLabel("Reject").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId("primaryId").setLabel("Primary").setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId("secondaryId").setLabel("Secondary").setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId("successId").setLabel("Success").setStyle(ButtonStyle.Success),
       new ButtonBuilder().setCustomId("dangerId").setLabel("Danger").setStyle(ButtonStyle.Danger),
     ]);
