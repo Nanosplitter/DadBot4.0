@@ -3,7 +3,7 @@ import type { ShewenyClient } from "sheweny";
 import { Message } from "discord.js";
 import { addCaughtRow } from "../models/caught-table";
 
-export class MessageEvent extends Event {
+export class ImChecker extends Event {
   constructor(client: ShewenyClient) {
     super(client, "messageCreate", {
       description: "Message was sent",
