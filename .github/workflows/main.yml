@@ -15,8 +15,8 @@ jobs:
     
     - name: print secrets
       run: |
-          echo "$CONFIG_SECRET" >> config.json
-          cat config.json
+          echo "$CONFIG_SECRET" >> src/config.json
+          cat src/config.json
       shell: bash
       env:
         CONFIG_SECRET: ${{secrets.CONFIG}}
