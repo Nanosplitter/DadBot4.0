@@ -15,9 +15,17 @@ export default class extends Command {
 
   async execute(interaction: CommandInteraction) {
     const message = await interaction.reply({ content: "Hey there! Let's chat!", fetchReply: true });
-    await message.startThread({
-      name: `${interaction.user.username}'s chat with Dad`,
-      autoArchiveDuration: 60,
-    });
+    try {
+      await message.startThread({
+        name: `${interaction.user.username}'s chat with Dad`,
+        autoArchiveDuration: 60,
+      });
+    } catch (error) {
+      await message.delete();
+      await interaction.followUp({
+        content: "I can't start a thread here!",
+        ephemeral: true,
+      });
+    }
   }
 }
