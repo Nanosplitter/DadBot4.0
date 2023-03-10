@@ -12,6 +12,14 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
+    
+    - name: print secrets
+      run: |
+          echo "$CONFIG_SECRET" >> config.json
+          cat config.json
+      shell: bash
+      env:
+        CONFIG_SECRET: ${{secrets.CONFIG}}
       
     - name: 🔨 Build Project
       run: |
