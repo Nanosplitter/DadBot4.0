@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Command } from "sheweny";
-import { CommandInteraction, EmbedBuilder } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import type { ShewenyClient } from "sheweny";
 
 export class Bird extends Command {
