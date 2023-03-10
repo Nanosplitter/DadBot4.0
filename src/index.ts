@@ -1,7 +1,6 @@
 import { CommandInteraction, Message } from "discord.js";
 import { ShewenyClient } from "sheweny";
 import config from "./config.json";
-// import { reminderEmitter } from "./emitters/reminder-emitter";
 import runSchedulers from "./schedulers";
 
 const client = new ShewenyClient({
@@ -19,7 +18,6 @@ const client = new ShewenyClient({
       directory: "./commands",
       autoRegisterApplicationCommands: true,
       applicationPermissions: true,
-      guildId: ["850473081063211048"],
       default: {
         userPermissions: ["UseApplicationCommands"],
       },
@@ -41,7 +39,7 @@ const client = new ShewenyClient({
       directory: "./inhibitors",
     },
   },
-  mode: "development", // Change to production for production bot
+  mode: config.DEPLOY_MODE as ShewenyClient["mode"],
 });
 
 client.managers
