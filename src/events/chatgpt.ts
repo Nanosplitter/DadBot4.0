@@ -27,62 +27,65 @@ export class ChatGpt extends Event {
       return;
     }
 
-    await message.channel.sendTyping();
+    try {
+      await message.channel.sendTyping();
+      const configuration = new Configuration({
+        apiKey: config.OPENAPI_TOKEN,
+      });
 
-    const configuration = new Configuration({
-      apiKey: config.OPENAPI_TOKEN,
-    });
+      const openai = new OpenAIApi(configuration);
 
-    const openai = new OpenAIApi(configuration);
+      const messages: ChatMessage[] = [];
 
-    const messages: ChatMessage[] = [];
+      const threadMessages = await message.channel.messages.fetch();
 
-    const threadMessages = await message.channel.messages.fetch();
+      threadMessages.reverse().forEach((threadMessage) => {
+        if (threadMessage.content === "") {
+          return;
+        }
+        if (threadMessage.author.bot) {
+          messages.push({
+            role: "assistant",
+            content: threadMessage.content,
+          });
+        } else {
+          messages.push({
+            role: "user",
+            content: threadMessage.content,
+          });
+        }
+      });
 
-    threadMessages.reverse().forEach((threadMessage) => {
-      if (threadMessage.content === "") {
+      while (messages.length > 10) {
+        messages.shift();
+      }
+
+      messages.unshift({
+        role: "system",
+        content: "You are DadBot, a chatbot to act like a father and to have fun with the people you chat with.",
+      });
+
+      const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        // @ts-ignore
+        messages: messages,
+      });
+
+      const dadMessage = completion!.data!.choices[0]!.message!.content;
+
+      const chunks = chunkSubstr(dadMessage, 2000);
+
+      if (chunks === null) {
         return;
       }
-      if (threadMessage.author.bot) {
-        messages.push({
-          role: "assistant",
-          content: threadMessage.content,
-        });
-      } else {
-        messages.push({
-          role: "user",
-          content: threadMessage.content,
-        });
-      }
-    });
 
-    while (messages.length > 10) {
-      messages.shift();
+      chunks.forEach(async (chunk) => {
+        // @ts-ignore
+        await message.channel.send({ content: chunk });
+      });
+    } catch (error) {
+      await message.channel.send({ content: "Something went wrong! Try sending another message or making a new chat" });
     }
-
-    messages.unshift({
-      role: "system",
-      content: "You are DadBot, a chatbot to act like a father and to have fun with the people you chat with.",
-    });
-
-    const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      // @ts-ignore
-      messages: messages,
-    });
-
-    const dadMessage = completion!.data!.choices[0]!.message!.content;
-
-    const chunks = chunkSubstr(dadMessage, 2000);
-
-    if (chunks === null) {
-      return;
-    }
-
-    chunks.forEach(async (chunk) => {
-      // @ts-ignore
-      await message.channel.send({ content: chunk });
-    });
   }
 }
 
