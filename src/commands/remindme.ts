@@ -30,6 +30,22 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
+    if (interaction.channel == null) {
+      await interaction.reply({
+        content: "You can't use this command outside of a server channel",
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (interaction.channel.isThread()) {
+      await interaction.reply({
+        content: "You can't use this command in a thread",
+        ephemeral: true,
+      });
+      return;
+    }
+
     const what = interaction.options.get("what")?.value;
 
     const when = interaction.options.get("when")?.value;
