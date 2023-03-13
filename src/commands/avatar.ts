@@ -3,7 +3,7 @@ import type { ShewenyClient } from "sheweny";
 // @ts-ignore
 import type { ContextMenuInteraction } from "discord.js";
 
-export default class extends Command {
+export class Avatar extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
       name: "avatar",
