@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import { schedulerEmitter } from "../emitters/scheduler-emitter";
@@ -16,9 +17,8 @@ export default class extends Event {
     const channelId = "856919399789625376";
     const channel = (await this.client.channels.fetch(channelId)) as TextChannel;
 
-    const apodUrl = "https://api.nasa.gov/planetary/apod?api_key=hQqgupM0Ghb1OTjjrPkoIDw1EJq6pZQQdgMGBpnb";
-
-    const apod = await fetch(apodUrl).then((res) => res.json());
+    const request = await axios.get("https://api.nasa.gov/planetary/apod?api_key=hQqgupM0Ghb1OTjjrPkoIDw1EJq6pZQQdgMGBpnb");
+    const apod = request.data;
 
     const embed = new EmbedBuilder().setTitle(apod.title).setDescription(apod.explanation);
 
