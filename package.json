@@ -6,20 +6,24 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "tsc",
+    "test": "jest",
     "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts",
     "format": "prettier --write .",
     "formatcheck": "prettier --check ."
   },
   "dependencies": {
     "@discordjs/voice": "*",
+    "@types/jest": "^29.4.0",
     "axios": "^0.27.2",
     "chrono-node": "^2.5.1",
     "color2k": "^2.0.2",
     "cron": "^2.2.0",
     "discord.js": "^14.0.0",
+    "jest": "^29.5.0",
     "mysql2": "^3.2.0",
     "openai": "^3.2.1",
     "sheweny": "^4.0.0",
+    "ts-jest": "^29.0.5",
     "uwuifier": "^4.0.5"
   },
   "devDependencies": {
