@@ -29,7 +29,7 @@ export default class extends Command {
         },
         {
           name: "channel",
-          description: "The channel to send the birthday message to",
+          description: "The channel to send the birthday message to. DO NOT set as a thread.",
           type: ApplicationCommandOptionType.Channel,
           required: true,
         },
@@ -41,6 +41,14 @@ export default class extends Command {
     const month = interaction.options.get("month")?.value as number;
     const day = interaction.options.get("day")?.value as number;
     const channel = interaction.options.get("channel")?.channel as TextChannel;
+
+    if (channel.isThread()) {
+      await interaction.reply({
+        content: "You can't set the birthday channel to a thread",
+        ephemeral: true,
+      });
+      return;
+    }
 
     if (month == undefined || day == undefined) {
       await interaction.reply({
