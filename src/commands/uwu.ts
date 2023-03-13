@@ -15,8 +15,16 @@ export default class extends Command {
   }
 
   async execute(interaction: MessageContextMenuCommandInteraction) {
+    if (interaction.channel == null) {
+      await interaction.reply({
+        content: "You can't use this command outside of a server channel",
+        ephemeral: true,
+      });
+      return;
+    }
+
     // @ts-ignore
-    const message = await interaction.channel!.messages.fetch(interaction.targetId);
+    const message = await interaction.channel.messages.fetch(interaction.targetId);
 
     const text = message.content;
 
