@@ -1,4 +1,4 @@
-import { PingCommand } from "../commands/ping";
+import { Ping } from "../commands/ping";
 import type { CommandInteraction } from "discord.js";
 
 describe("ping", () => {
@@ -7,7 +7,7 @@ describe("ping", () => {
       reply: jest.fn(),
     };
 
-    await PingCommand.prototype.execute.call({ client: {} }, interaction as unknown as jest.Mocked<CommandInteraction>);
+    await Ping.prototype.execute.call({ client: {} }, interaction as unknown as jest.Mocked<CommandInteraction>);
 
     expect(interaction.reply).toHaveBeenCalledWith({ content: "Pong" });
   });
