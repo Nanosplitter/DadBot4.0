@@ -3,7 +3,7 @@ import type { ShewenyClient } from "sheweny";
 import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, CommandInteraction, EmbedBuilder } from "discord.js";
 import { hasBadContrast, parseToRgba, lighten, getContrast } from "color2k";
 
-export default class extends Command {
+export class ChangeColor extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
       name: "changecolor",
