@@ -3,7 +3,7 @@ import type { ShewenyClient } from "sheweny";
 import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { getCaughtRows } from "../models/caught-table";
 
-export default class extends Command {
+export class Caught extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
       name: "caught",
