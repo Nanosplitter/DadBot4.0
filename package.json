@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/src/index.js",
     "build": "tsc",
     "test": "jest",
     "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts",
