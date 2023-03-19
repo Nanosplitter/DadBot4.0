@@ -1,6 +1,7 @@
 import config from "../config.json";
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "discord.js";
+import { chatsplit } from "../functions/chatsplit";
 
 type ChatMessage = {
   role: string;
@@ -62,7 +63,7 @@ export async function chatgpt(message: Message) {
 
     const dadMessage = completion!.data!.choices[0]!.message!.content;
 
-    const chunks = chunkSubstr(dadMessage, 2000);
+    const chunks = chatsplit(dadMessage);
 
     if (chunks === null) {
       return;
@@ -75,15 +76,4 @@ export async function chatgpt(message: Message) {
   } catch (error) {
     await message.channel.send({ content: "Something went wrong! Try sending another message or making a new chat" });
   }
-}
-
-function chunkSubstr(str: string, size: number) {
-  const numChunks = Math.ceil(str.length / size);
-  const chunks = new Array(numChunks);
-
-  for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-    chunks[i] = str.substr(o, size);
-  }
-
-  return chunks;
 }
