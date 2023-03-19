@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import type { CommandInteraction } from "discord.js";
@@ -14,10 +15,9 @@ export default class extends Command {
 
   async execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    const url = "https://inspirobot.me/api?generate=true";
-    const res = await fetch(url);
-    console.log(res);
-    const body = await res.text();
+    const request = await axios.get("https://inspirobot.me/api?generate=true");
+    const { data } = request;
+    const body = data;
 
     await interaction.followUp({ content: body });
   }
