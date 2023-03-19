@@ -2,7 +2,7 @@
   "name": "dadbot",
   "version": "4.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "start": "node ./dist/src/index.js",
     "build": "tsc",
