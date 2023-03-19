@@ -18,7 +18,7 @@ export function chatsplit(text: string): string[] {
       }
       chunks.push(split[i]);
     } else {
-      const language = split[i].substring(0, split[i].indexOf("\n"));
+      const language = split[i].substring(0, split[i].indexOf(" "));
       split[i] = split[i].substring(split[i].indexOf("\n") + 1);
       while (split[i].length > 1994) {
         let index = split[i].substring(0, 1994).lastIndexOf("\n");
