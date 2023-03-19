@@ -13,10 +13,12 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
+    await interaction.deferReply();
     const url = "https://inspirobot.me/api?generate=true";
     const res = await fetch(url);
+    console.log(res);
     const body = await res.text();
 
-    await interaction.reply({ content: body });
+    await interaction.followUp({ content: body });
   }
 }
