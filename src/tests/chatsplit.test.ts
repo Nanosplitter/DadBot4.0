@@ -20,4 +20,23 @@ describe("chatsplit", () => {
     const chunks = chatsplit(text);
     expect(chunks).toHaveLength(2);
   });
+
+  it("should return string split into 2000 character chunks, keeping code blocks together, even if they are longer than 2000 characters, and the string is longer than 2000 characters", () => {
+    const text = fs.readFileSync(path.join(__dirname, "./resources/long-message-and-code.txt"), "utf-8");
+    const chunks = chatsplit(text);
+    expect(chunks).toHaveLength(4);
+  });
+
+  it("should return string split into 2000 character chunks, assuming the string is longer than 2000 characters. The chunks shuold be split at a newline", () => {
+    const text = fs.readFileSync(path.join(__dirname, "./resources/long-message.txt"), "utf-8");
+    const chunks = chatsplit(text);
+    expect(chunks).toHaveLength(3);
+  });
+
+  it("should return code split into 2000 character chunks, keeping the language tag on all chunks", () => {
+    const text = fs.readFileSync(path.join(__dirname, "./resources/long-code.txt"), "utf-8");
+    const chunks = chatsplit(text);
+    expect(chunks).toHaveLength(2);
+    expect(chunks[1]).toMatch(/^```cpp/);
+  });
 });

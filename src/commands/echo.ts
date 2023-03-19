@@ -16,7 +16,7 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
-    const text = fs.readFileSync(path.join(__dirname, "../tests/resources/long-message.txt"), "utf-8");
+    const text = fs.readFileSync(path.join(__dirname, "../tests/resources/long-code.txt"), "utf-8");
     console.log(text.length);
     await interaction.deferReply();
     await interaction.followUp({ content: "Splitting message..." });
