@@ -74,6 +74,7 @@ export async function chatgpt(message: Message) {
       await message.channel.send({ content: chunk });
     });
   } catch (error) {
+    console.log(error);
     await message.channel.send({ content: "Something went wrong! Try sending another message or making a new chat" });
   }
 }
