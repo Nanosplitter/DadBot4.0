@@ -39,8 +39,7 @@ int main() {
     std::vector<const char> instanceExtensions;
     std::vector<const char> instanceLayers;
 
-    //Creating logical
-device
+    //Creating logical device
     VkDevice device;
     VkPhysicalDevice physicalDevice;
 
