@@ -1,3 +1,11 @@
 {
-  "conventionalCommits.scopes": ["command", "git", "config"]
+  "conventionalCommits.scopes": [
+    "command",
+    "git",
+    "config"
+  ],
+  "cSpell.words": [
+    "chatsplit",
+    "openai"
+  ]
 }
