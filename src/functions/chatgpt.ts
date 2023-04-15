@@ -2,11 +2,8 @@ import config from "../config.json";
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "discord.js";
 import { chatsplit } from "../functions/chatsplit";
-
-type ChatMessage = {
-  role: string;
-  content: string;
-};
+import { ChatGPT } from "../models/chatgpt";
+import { ChatMessage } from "../models/chatgpt";
 
 export async function chatgpt(message: Message) {
   if (!message.channel.isThread()) {
@@ -19,11 +16,6 @@ export async function chatgpt(message: Message) {
 
   try {
     await message.channel.sendTyping();
-    const configuration = new Configuration({
-      apiKey: config.OPENAPI_TOKEN,
-    });
-
-    const openai = new OpenAIApi(configuration);
 
     const messages: ChatMessage[] = [];
 
@@ -55,15 +47,7 @@ export async function chatgpt(message: Message) {
       content: "You are DadBot, a chatbot to act like a father and to have fun with the people you chat with.",
     });
 
-    const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      // @ts-ignore
-      messages: messages,
-    });
-
-    const dadMessage = completion!.data!.choices[0]!.message!.content;
-
-    const chunks = chatsplit(dadMessage);
+    const chunks = await new ChatGPT("gpt-3.5-turbo").chatgpt(messages);
 
     if (chunks === null) {
       return;
