@@ -8,6 +8,17 @@ export type PancakeChanRow = mysql.RowDataPacket & {
 
 export function getStories(): Promise<PancakeChanRow[]> {
   return new Promise((resolve, reject) => {
+    pool.query<(PancakeChanRow & mysql.RowDataPacket)[]>("SELECT * FROM pancakechan ORDER BY id DESC LIMIT 3", function (err, results, fields) {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+export function getAllStories(): Promise<PancakeChanRow[]> {
+  return new Promise((resolve, reject) => {
     pool.query<(PancakeChanRow & mysql.RowDataPacket)[]>("SELECT * FROM pancakechan", function (err, results, fields) {
       if (err) {
         reject(err);

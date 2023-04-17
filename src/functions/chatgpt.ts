@@ -1,7 +1,4 @@
-import config from "../config.json";
-import { Configuration, OpenAIApi } from "openai";
 import { Message } from "discord.js";
-import { chatsplit } from "../functions/chatsplit";
 import { ChatGPT } from "../models/chatgpt";
 import { ChatMessage } from "../models/chatgpt";
 
