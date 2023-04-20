@@ -1,4 +1,4 @@
-import { Message, ThreadChannel } from "discord.js";
+import { Message } from "discord.js";
 import { ChatGPT } from "../models/chatgpt";
 import { ChatMessage } from "../models/chatgpt";
 
