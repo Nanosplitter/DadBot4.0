@@ -1,9 +1,18 @@
-import { Message } from "discord.js";
+import { Message, ThreadChannel } from "discord.js";
 import { ChatGPT } from "../models/chatgpt";
 import { ChatMessage } from "../models/chatgpt";
 
 export async function chatgpt(message: Message) {
   if (!message.channel.isThread()) {
+    return;
+  }
+
+  const starterMessage = await message.channel.fetchStarterMessage();
+  if (starterMessage === null) {
+    return;
+  }
+
+  if (!starterMessage.author.bot) {
     return;
   }
 
