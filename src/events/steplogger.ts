@@ -2,7 +2,7 @@ import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import { schedulerEmitter } from "../emitters/scheduler-emitter";
 import { APIEmbedField, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextChannel } from "discord.js";
-import { getAllStepLogs, getCurrentLeaderboard } from "../models/steplogs-table";
+import { getCurrentLeaderboard } from "../models/steplogs-table";
 
 export default class StepLogger extends Event {
   constructor(client: ShewenyClient) {

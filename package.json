@@ -6,14 +6,12 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "build": "tsc",
-    "test": "jest",
     "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts",
     "format": "prettier --write .",
     "formatcheck": "prettier --check ."
   },
   "dependencies": {
     "@discordjs/voice": "*",
-    "@types/jest": "^29.4.0",
     "axios": "^0.27.2",
     "chrono-node": "^2.5.1",
     "color2k": "^2.0.2",
