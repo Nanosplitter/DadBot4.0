@@ -6,16 +6,16 @@ import { schedulerEmitter } from "../emitters/scheduler-emitter";
 export default class extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
-      name: "pancakechan",
-      description: "Make a new episode of pancake-chan",
+      name: "newstory",
+      description: "Make a new episode of the story",
       type: "SLASH_COMMAND",
-      category: "pancake-chan",
+      category: "story",
       userPermissions: ["Administrator"],
     });
   }
 
   async execute(interaction: CommandInteraction) {
-    schedulerEmitter.emit("pancakechan");
+    schedulerEmitter.emit("newstory");
     await interaction.reply({ content: "Episode request sent!", ephemeral: true });
   }
 }
