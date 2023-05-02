@@ -17,7 +17,7 @@ export default class extends Event {
     }
 
     const steps = interaction.fields.getTextInputValue("steps");
-    const channelId = "1101265302609731684";
+    const channelId = "1095050641157673021";
     const channel = interaction.guild?.channels.cache.get(channelId);
 
     if (!channel) {

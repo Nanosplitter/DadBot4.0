@@ -14,7 +14,7 @@ export default class StepLogger extends Event {
   }
 
   async execute() {
-    const channelId = "1101265302609731684";
+    const channelId = "1095050641157673021";
     const channel = (await this.client.channels.fetch(channelId)) as TextChannel;
 
     const embed = new EmbedBuilder().setTitle("Log your steps!").setDescription("Current leaderboard:");
