@@ -1,7 +1,7 @@
-import { Interaction } from "discord.js";
+import { APIEmbedField, EmbedBuilder, Interaction } from "discord.js";
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { addStepLogRow } from "../models/steplogs-table";
+import { addStepLogRow, getCurrentLeaderboard } from "../models/steplogs-table";
 
 export default class extends Event {
   constructor(client: ShewenyClient) {
@@ -11,13 +11,13 @@ export default class extends Event {
     });
   }
 
-  execute(interaction: Interaction) {
+  async execute(interaction: Interaction) {
     if (!interaction.isModalSubmit() || interaction.customId !== "steploggermodal") {
       return;
     }
 
     const steps = interaction.fields.getTextInputValue("steps");
-    const channelId = "1095050641157673021";
+    const channelId = "1101265302609731684";
     const channel = interaction.guild?.channels.cache.get(channelId);
 
     if (!channel) {
@@ -36,14 +36,31 @@ export default class extends Event {
 
     interaction.deferUpdate();
 
-    addStepLogRow({
+    await addStepLogRow({
       server_id: interaction.guildId,
       user: interaction.user.username + "#" + interaction.user.discriminator,
       steps: parseInt(steps),
       submit_time: new Date(),
     });
 
+    const embed = new EmbedBuilder().setTitle("Log your steps!").setDescription("Current leaderboard:");
+
+    const stepsField = await getCurrentLeaderboard().then((stepLogs) => {
+      const steps: APIEmbedField | APIEmbedField[] | { name: string; value: string }[] = [];
+      stepLogs.forEach((stepLog) => {
+        steps.push({
+          name: stepLog.user,
+          value: stepLog.steps.toString() + " steps",
+        });
+      });
+
+      return steps;
+    });
+
+    embed.addFields(stepsField);
+    await interaction.message?.edit({ embeds: [embed] });
+
     // @ts-ignore
-    channel.send(`${interaction.user} logged ${steps} steps!`);
+    await channel.send(`${interaction.user} logged ${steps} steps!`);
   }
 }
