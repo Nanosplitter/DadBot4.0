@@ -49,3 +49,18 @@ export function getBirthdaysByMonthAndDay(month: number, day: number): Promise<B
     });
   });
 }
+
+// migrate birthdays from the birthdays table to the birthdays_4 table
+export function migrateBirthdays() {
+  return new Promise((resolve, reject) => {
+    pool.query<(BirthdayRow & mysql.RowDataPacket)[]>(
+      "INSERT INTO `birthdays_4` (`id`, `author`, `mention`, `channel_id`, `month`, `day`) SELECT `id`, `author`, `mention`, `channel_id`, MONTH(`birthday`) as `month`, DAY(`birthday`) as `day` FROM `birthdays`;",
+      function (err, results, fields) {
+        if (err) {
+          reject(err);
+        }
+        resolve(results);
+      }
+    );
+  });
+}
