@@ -9,8 +9,10 @@
     "chatsplit",
     "cooldown",
     "dalle",
+    "Geoguess",
     "openai",
     "pancakechan",
-    "sheweny"
+    "sheweny",
+    "subcountry"
   ]
 }

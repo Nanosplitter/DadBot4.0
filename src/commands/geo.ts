@@ -1,8 +1,15 @@
 import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { CommandInteraction, Embed, EmbedBuilder, AttachmentBuilder } from "discord.js";
+import { CommandInteraction, EmbedBuilder, AttachmentBuilder, InteractionReplyOptions, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { Client } from "@googlemaps/google-maps-services-js";
 import config from "../config.json";
+
+type Location = {
+  interactionOptions: InteractionReplyOptions;
+  address: string;
+  lat: number;
+  lng: number;
+};
 
 export default class extends Command {
   constructor(client: ShewenyClient) {
@@ -15,52 +22,72 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
-    //const embed = new EmbedBuilder().setTitle("Welcome to Geo Guesser!").setDescription("You will have one minute to guess the location of the picture. Click the button to make a guess!");
-    //await interaction.reply({ embeds: [embed] });
+    await interaction.deferReply();
 
-    // get random city from geodata.json
-    const cities = require("../../resources/geodata.json");
-    const place = cities[Math.floor(Math.random() * cities.length)];
+    const location = await this.getLocation();
 
-    console.log(place);
-
-    const city = place.name;
-    const subCountry = place.subcountry;
-    const country = place.country;
-
-    const args = {
-      params: {
-        key: config.G_MAPS_API_KEY,
-        address: `${city}, ${subCountry}, ${country}`,
-      },
-    };
-
-    const client = new Client();
-    let location = { lat: 0, lng: 0 };
-    await client
-      .geocode(args)
-      .then((gcResponse) => {
-        location = gcResponse.data.results[0].geometry.location;
-        console.log(location);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    await interaction.followUp(location.interactionOptions);
 
     console.log(location);
+  }
 
-    // Make a request for a street view image
-    // with template https://maps.googleapis.com/maps/api/streetview?size=400x400&location={location}&fov=80&heading=0&pitch=0&key=YOUR_API_KEY
-    // use a raw get request for this. Do not use the client.
+  async getLocation(): Promise<Location> {
+    let foundValidLocation = false;
 
-    const response = await fetch(`https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.lat},${location.lng}&fov=80&heading=0&pitch=0&key=${config.G_MAPS_API_KEY}`);
+    let response = null;
+    let address = "No Address Found";
+    let location = { lat: 0, lng: 0 };
 
-    const buffer = Buffer.from(await response.arrayBuffer());
+    while (!foundValidLocation) {
+      const cities = require("../../resources/geodata.json");
+      const place = cities[Math.floor(Math.random() * cities.length)];
+
+      const city = place.name;
+      const subCountry = place.subcountry;
+      const country = place.country;
+
+      const args = {
+        params: {
+          key: config.G_MAPS_API_KEY,
+          address: `${city}, ${subCountry}, ${country}`,
+        },
+      };
+
+      const client = new Client();
+      location = { lat: 0, lng: 0 };
+      await client
+        .geocode(args)
+        .then((gcResponse) => {
+          location = gcResponse.data.results[0].geometry.location;
+          address = gcResponse.data.results[0].formatted_address;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+      response = await fetch(
+        `https://maps.googleapis.com/maps/api/streetview?size=2000x2000&location=${location.lat},${location.lng}&fov=80&heading=0&pitch=0&key=${config.G_MAPS_API_KEY}&return_error_code=true`
+      );
+
+      foundValidLocation = response.ok;
+    }
+
+    const buffer = Buffer.from(await response!.arrayBuffer());
 
     const file = new AttachmentBuilder(buffer, { name: "img.jpg" });
 
-    const embed = new EmbedBuilder().setTitle("Street View Image").setImage("attachment://img.jpg");
+    const embedImage = new EmbedBuilder().setTitle(address).setImage("attachment://img.jpg");
 
-    await interaction.reply({ embeds: [embed], files: [file] });
+    const embedResults = new EmbedBuilder().setTitle("Guesses will go here!");
+
+    const row = new ActionRowBuilder().addComponents([new ButtonBuilder().setCustomId("geoguess").setLabel("Guess").setStyle(ButtonStyle.Primary)]);
+
+    return {
+      // @ts-ignore
+      interactionOptions: { embeds: [embedImage, embedResults], files: [file], components: [row] },
+      address: address,
+      lat: location.lat,
+      lng: location.lng,
+    };
   }
 }
