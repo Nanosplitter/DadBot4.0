@@ -31,6 +31,17 @@ export function getCurrentLeaderboard(): Promise<StepLogRow[]> {
   });
 }
 
+export function getHighestDailySteps(): Promise<StepLogRow[]> {
+  return new Promise((resolve, reject) => {
+    pool.query<(StepLogRow & mysql.RowDataPacket)[]>("SELECT * FROM steplogs WHERE steps = (SELECT MAX(steps) FROM steplogs) LIMIT 1", function (err, results, fields) {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
 export function addStepLogRow(stepLog: Omit<StepLogRow, "id">): Promise<void> {
   return new Promise((resolve, reject) => {
     pool.query("INSERT INTO steplogs SET ?", [stepLog], function (err, results, fields) {

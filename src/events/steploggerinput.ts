@@ -1,7 +1,7 @@
 import { APIEmbedField, EmbedBuilder, Interaction } from "discord.js";
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import { addStepLogRow, getCurrentLeaderboard } from "../models/steplogs-table";
+import { addStepLogRow, getCurrentLeaderboard, getHighestDailySteps } from "../models/steplogs-table";
 
 export default class extends Event {
   constructor(client: ShewenyClient) {
@@ -43,11 +43,24 @@ export default class extends Event {
       submit_time: new Date(),
     });
 
-    const embed = new EmbedBuilder().setTitle("Log your steps!").setDescription("Current leaderboard:");
+    const embed = new EmbedBuilder().setTitle("Log your steps!").setDescription("Current leaderboard:").setColor("#ffffff");
 
-    const stepsField = await getCurrentLeaderboard().then((stepLogs) => {
+    let first = true;
+
+    const stepsFields = await getCurrentLeaderboard().then((stepLogs) => {
       const steps: APIEmbedField | APIEmbedField[] | { name: string; value: string }[] = [];
       stepLogs.forEach((stepLog) => {
+        if (first) {
+          // @ts-ignore
+          const firstPlaceUser = this.client.users.cache.find((userVar) => userVar.username == stepLog.user.split("#")[0]);
+          const firstPlaceAvatarUrl = firstPlaceUser?.displayAvatarURL({ extension: "png", size: 1024 });
+
+          embed.setAuthor({
+            name: `${stepLog.user.split("#")[0]} is in the lead!`,
+            iconURL: firstPlaceAvatarUrl,
+          });
+          first = false;
+        }
         steps.push({
           name: stepLog.user,
           value: stepLog.steps.toString() + " steps",
@@ -57,7 +70,20 @@ export default class extends Event {
       return steps;
     });
 
-    embed.addFields(stepsField);
+    const maxDailySteps = await getHighestDailySteps();
+
+    const maxUsername = maxDailySteps[0].user.split("#")[0];
+
+    // @ts-ignore
+    const user = this.client.users.cache.find((user) => user.username == maxUsername);
+    const avatarUrl = user?.displayAvatarURL({ extension: "png", size: 1024 });
+
+    embed.setFooter({
+      text: `Single day record:\n${maxDailySteps[0].user} with ${maxDailySteps[0].steps} steps`,
+      iconURL: avatarUrl,
+    });
+
+    embed.addFields(stepsFields);
     await interaction.message?.edit({ embeds: [embed] });
 
     // @ts-ignore
