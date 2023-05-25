@@ -7,7 +7,7 @@ export class Avatar extends Command {
   constructor(client: ShewenyClient) {
     super(client, {
       name: "avatar",
-      description: "Get avatar of user",
+      description: "Get avatar of user.",
       type: "CONTEXT_MENU_USER",
       category: "fun",
     });
