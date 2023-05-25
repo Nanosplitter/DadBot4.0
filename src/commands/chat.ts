@@ -23,7 +23,7 @@ export default class extends Command {
     } catch (error) {
       await message.delete();
       await interaction.followUp({
-        content: "I can't start a thread here!",
+        content: "I can't start a thread here! Make sure you're running this command in a channel.",
         ephemeral: true,
       });
     }
