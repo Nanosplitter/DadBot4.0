@@ -45,14 +45,15 @@ export default class StepLogger extends Event {
     });
 
     const maxDailySteps = await getHighestDailySteps();
-
-    const maxUsername = maxDailySteps[0].user.split("#")[0];
-
-    // @ts-ignore
-    const user = this.client.users.cache.find((user) => user.username == maxUsername);
-    const avatarUrl = user?.displayAvatarURL({ extension: "png", size: 1024 });
-
+    
     if (maxDailySteps.length > 0) {
+      const maxUsername = maxDailySteps[0].user.split("#")[0];
+
+      // @ts-ignore
+      const user = this.client.users.cache.find((user) => user.username == maxUsername);
+      const avatarUrl = user?.displayAvatarURL({ extension: "png", size: 1024 });
+
+    
       embed.setFooter({
         text: `Single day record:\n${maxDailySteps[0].user} with ${maxDailySteps[0].steps} steps`,
         iconURL: avatarUrl,
