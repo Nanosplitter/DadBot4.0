@@ -52,10 +52,12 @@ export default class StepLogger extends Event {
     const user = this.client.users.cache.find((user) => user.username == maxUsername);
     const avatarUrl = user?.displayAvatarURL({ extension: "png", size: 1024 });
 
-    embed.setFooter({
-      text: `Single day record:\n${maxDailySteps[0].user} with ${maxDailySteps[0].steps} steps`,
-      iconURL: avatarUrl,
-    });
+    if (maxDailySteps.length > 0) {
+      embed.setFooter({
+        text: `Single day record:\n${maxDailySteps[0].user} with ${maxDailySteps[0].steps} steps`,
+        iconURL: avatarUrl,
+      });
+    }
 
     embed.addFields(steps);
     const row = new ActionRowBuilder().addComponents([new ButtonBuilder().setCustomId("steplogger").setLabel("Log Steps").setStyle(ButtonStyle.Primary)]);
