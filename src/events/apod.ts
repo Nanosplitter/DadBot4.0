@@ -1,8 +1,8 @@
-import axios from "axios";
+//import axios from "axios";
 import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import { schedulerEmitter } from "../emitters/scheduler-emitter";
-import { EmbedBuilder, TextChannel } from "discord.js";
+//import { EmbedBuilder, TextChannel } from "discord.js";
 
 export default class extends Event {
   constructor(client: ShewenyClient) {
